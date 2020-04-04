@@ -1,19 +1,29 @@
 # chess-app
+Chess game built with electron + prolog + vuejs
 
-## Project setup
+## ProjectSetup
+
+### Prerequisites
+
+- Nodejs
+- SWI Prolog
+
+### Installation
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Compile and hot-reload for development
 ```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
+npm run electron:serve
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Compile and minify for production
+For current platform:
+```
+npm run electron:build
+```
+For windows:
+```
+npm run electron:build:windows
+```
