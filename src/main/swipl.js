@@ -1,5 +1,5 @@
 require('fix-path')();
-const { dialog } = require('electron');
+const { app, dialog } = require('electron');
 const { spawn } = require('child_process');
 const path = require('path');
 
@@ -11,12 +11,19 @@ class Swipl {
     }
 
     startGame() {
-        this._swipl = spawn('swipl');
+        this._swipl = spawn('swipl', {
+            cwd: path.join(__dirname, '../../static/prolog/')
+        });
 
         this._swipl.on('error', (e) => {
             if (e.code === 'ENOENT') {
                 dialog.showErrorBox('Prolog not found in command line', 'Error executing swipl command, please make sure SWI Prolog is installed and available from command line');
+                app.quit();
+
+                return;
             }
+
+            throw e;
         });
 
         this._swipl.on('close', (code) => {
@@ -41,9 +48,10 @@ class Swipl {
             }
         });
         
-        this._swipl.stdin.on('error', () => {});
+        this._swipl.stdin.on('error', (e) => {
+            //ignore stdin errors
+        });
 
-        this._call(`working_directory(_,'${path.join(__dirname, '../../static/prolog/')}')`);
         this._call("[chess]");
         this._call('run');
     }
@@ -70,11 +78,8 @@ class Swipl {
 
     restartGame(color) {
         this.stopGame();
-        setTimeout(() => {
-            this.startGame();
-            this._write(color);
-        })
-        
+        this.startGame();
+        this._write(color);
     }
 
     stopGame() {

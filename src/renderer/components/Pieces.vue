@@ -20,7 +20,6 @@ import Piece from './Piece.vue';
 export default {
     name: 'Pieces',
     data() {
-        console.log('data')
         return {
             positions: this.getDefaultPositions(),
             selectedPiece: null,
@@ -92,7 +91,6 @@ export default {
     },
     created() {
         ipcRenderer.on('game-events', (_, event, ...args) => {
-            console.log(event, args);
             if(event === 'MOVE') {
                 this.computerMove(args[0]);
             } else if(event === 'ILLEGAL_MOVE') {
@@ -101,7 +99,6 @@ export default {
             }
         });
         this.$root.$on('cell-click', targetCell => {
-            console.log(targetCell)
             if (this.selectedPiece) {
                 this.playerMove(`${this.selectedPiece}${targetCell}`);
             }
