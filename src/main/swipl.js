@@ -43,7 +43,7 @@ class Swipl {
             } else if (output.includes('Illegal Move')) {
                 this.ipcRenderer.send('game-events', 'ILLEGAL_MOVE');
             } else if (/(black|white) wins/.test(output)) {
-                const winner = output.match(/black|white)/)[0];
+                const winner = output.match(/black|white/)[0];
                 this.ipcRenderer.send('game-events', 'WIN', winner);
             }
         });
